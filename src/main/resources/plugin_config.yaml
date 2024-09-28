@@ -1,0 +1,10 @@
+menuItems:
+  - name: Parent Option 1
+    subItems:
+      - name: Child Option 1
+        subItems:
+          - name: Grandchild Option 1
+            code: |
+              public void example() {
+                  // code here
+              }

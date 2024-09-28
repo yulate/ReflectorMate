@@ -1,0 +1,80 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.yulate.ReflectorMate</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>ReflectorMate</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="yulate531@gmail.com" url="https://www.yulate.com">yulate</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+ReflectorMate 旨在编写java反序列化poc时能够更加方便快速的进行编写。通过 ReflectorMate，您可以轻松生成基于反射的 `setFieldValue` 等方法以及其他样板代码，只需右键单击即可完成。
+
+### 主要功能：
+- **自动生成反射方法：** 快速生成用于设置和获取字段值的反射方法，减少手动编码的工作量。
+- **智能导入管理：** 自动管理导入语句，确保仅添加必要的导入，并优化和格式化您的代码。
+- **用户友好界面：** 无缝集成到 IntelliJ IDEA 中，通过右键菜单即可访问上下文敏感的操作。
+]]></description>
+
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+
+    <actions>
+        <!-- 在右键菜单中添加“Generate Reflection Methods”组 -->
+        <group id="com.example.ReflectorMate.GenerateReflectionMethods" text="Generate Reflection Methods" popup="true">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+
+            <!-- 定义子菜单项 -->
+            <action id="com.example.ReflectorMate.GenerateUnserialize"
+                    class="com.yulate.reflectormate.action.GenerateUnserializeAction"
+                    text="Unserialize"/>
+            <action id="com.example.ReflectorMate.GenerateSerialize"
+                    class="com.yulate.reflectormate.action.GenerateSerializeAction"
+                    text="Serialize"/>
+            <action id="com.example.ReflectorMate.GenerateSetFieldValue"
+                    class="com.yulate.reflectormate.action.GenerateSetFieldValueAction"
+                    text="Set Field Value"/>
+
+            <action id="com.example.ReflectorMate.GenerateGetField"
+                    class="com.yulate.reflectormate.action.GenerateGetFieldAction"
+                    text="Get Field Method"/>
+
+            <action id="com.example.ReflectorMate.GenerateGetFieldValue"
+                    class="com.yulate.reflectormate.action.GenerateGetFieldValueAction"
+                    text="Get Field Value Method"/>
+
+            <action id="com.example.ReflectorMate.GenerateGetFirstCtor"
+                    class="com.yulate.reflectormate.action.GenerateGetFirstCtorAction"
+                    text="Get First Constructor Method"/>
+
+            <action id="com.example.ReflectorMate.GenerateCreateWithConstructor"
+                    class="com.yulate.reflectormate.action.GenerateCreateWithConstructorAction"
+                    text="Create With Constructor Method"/>
+        </group>
+    </actions>
+
+    <depends>com.intellij.java</depends>
+    <depends>org.jetbrains.idea.maven</depends>
+
+
+    <!--  注册启动类  -->
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.yulate.reflectormate.MyStartupActivity"/>
+    </extensions>
+
+
+</idea-plugin>
