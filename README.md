@@ -12,11 +12,13 @@ ReflectorMate 支持通过json动态的添加可用的选项，只需要在json�
 
 每个菜单项包括代码片段、导入语句和Maven依赖。主要结构如下：
 
-menuItems: 包含一个或多个菜单项，每个项都可以包含子项。
-name: 菜单项的名称，显示在菜单中。
-code: 要插入的Java代码片段。
-imports: 代码片段所需的Java导入语句列表。
-mavenDependencies: Maven依赖列表，如果代码需要外部库支持，可以在这里添加。
+- menuItems: 包含一个或多个菜单项，每个项都可以包含子项。 
+- name: 菜单项的名称，显示在菜单中。 
+- code: 要插入的Java代码片段。 
+- imports: 代码片段所需的Java导入语句列表。 
+- mavenDependencies: Maven依赖列表，如果代码需要外部库支持，可以在这里添加。
+
+演示添加新的菜单
 
 1. 添加一级菜单
 ```json
