@@ -1,6 +1,68 @@
 {
   "menuItems": [
     {
+      "name": "Unserialize",
+      "code": "    public static void unserialize(String base) throws IOException, ClassNotFoundException {\n        byte[] result = Base64.getDecoder().decode(base);\n        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(result);\n        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);\n        objectInputStream.readObject();\n    }",
+      "imports": [
+        "java.io.ByteArrayInputStream",
+        "java.io.IOException",
+        "java.io.ObjectInputStream",
+        "java.util.Base64",
+        "java.io.ClassNotFoundException"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
+      "name": "Serialize",
+      "code": "    public static String serialize(Object object) throws IOException {\n        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();\n        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);\n        objectOutputStream.writeObject(object);\n        return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());\n    }",
+      "imports": [
+        "java.io.ByteArrayOutputStream",
+        "java.io.ObjectOutputStream",
+        "java.util.Base64",
+        "java.io.IOException"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
+      "name": "Get Field Method",
+      "code": "    public static Field getField(Class<?> clazz, String fieldName) {\n        Field field = null;\n        try {\n            field = clazz.getDeclaredField(fieldName);\n            field.setAccessible(true);\n        } catch (NoSuchFieldException e) {\n            if (clazz.getSuperclass() != null) {\n                field = getField(clazz.getSuperclass(), fieldName);\n            }\n        }\n        return field;\n    }",
+      "imports": [
+        "java.lang.reflect.Field",
+        "java.lang.NoSuchFieldException"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
+      "name": "Get Field Value Method",
+      "code": "public static Object getFieldValue(Object obj, String fieldName) throws Exception {\n    Field field = obj.getClass().getDeclaredField(fieldName);\n    field.setAccessible(true);\n    return field.get(obj);\n}",
+      "imports": [
+        "java.lang.reflect.Field"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
+      "name": "Set Field Value ",
+      "code": "public static void setFieldValue(Object object, String field, Object arg) throws NoSuchFieldException, IllegalAccessException {\n    Field f = object.getClass().getDeclaredField(field);\n    f.setAccessible(true);\n    f.set(object, arg);\n}\n",
+      "imports": [
+        "java.lang.reflect.Field"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
+      "name": "Get First Constructor Method",
+      "code": "    public static Constructor<?> getFirstCtor(String name) throws Exception {\n        Constructor<?> ctor = Class.forName(name).getDeclaredConstructors()[0];\n        ctor.setAccessible(true);\n        return ctor;\n    }",
+      "imports": [
+        "java.lang.reflect.Constructor"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
       "name": "Unsafe Reflector",
       "subItems": [
         {
