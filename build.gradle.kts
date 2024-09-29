@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
     id("org.jetbrains.intellij") version "1.17.4"
+//    id("org.jetbrains.intellij.platform") version "2.1.0"
 }
 
 group = "com.yulate"
@@ -17,7 +18,8 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.2.6")
+//    version.set("2023.2.6")
+    version.set("2024.2")
     type.set("IC") // Target IDE Platform
 //    localPath.set("/Applications/IntelliJ IDEA.app/Contents")
     plugins.set(listOf("com.intellij.java", "java", "org.jetbrains.idea.maven"))
