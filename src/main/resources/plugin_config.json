@@ -45,6 +45,15 @@
       ]
     },
     {
+      "name": "New Instance",
+      "code": "public static Object newInstance(String className, Object... args) throws Exception {\n        Constructor<?> ctor = Class.forName(className).getDeclaredConstructors()[0];\n        ctor.setAccessible(true);\n        return ctor.newInstance(args);\n    }",
+      "imports": [
+        "java.lang.reflect.Constructor"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
       "name": "Set Field Value ",
       "code": "public static void setFieldValue(Object object, String field, Object arg) throws NoSuchFieldException, IllegalAccessException {\n    Field f = object.getClass().getDeclaredField(field);\n    f.setAccessible(true);\n    f.set(object, arg);\n}\n",
       "imports": [
