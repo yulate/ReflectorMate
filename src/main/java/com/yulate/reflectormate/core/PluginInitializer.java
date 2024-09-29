@@ -11,25 +11,29 @@ import java.util.List;
 
 public class PluginInitializer {
 
+    private static List<MenuConfigLoader.MenuItem> cachedMenuItems = null;
+
     /**
      * 初始化插件菜单，基于 JSON 配置文件动态生成菜单项和子菜单项。
      *
      * @param jsonConfig JSON 配置文件的路径或内容
      */
     public static void initializeMenu(String jsonConfig) {
-        List<MenuConfigLoader.MenuItem> menuItems;
-        try {
-            // 从 JSON 配置中加载菜单项
-            menuItems = MenuConfigLoader.loadMenuItems(jsonConfig);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load menu items from JSON configuration", e);
+        if (cachedMenuItems == null) {
+            try {
+                // 从 JSON 配置中加载菜单项，并缓存
+                cachedMenuItems = MenuConfigLoader.loadMenuItems(jsonConfig);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to load menu items from JSON configuration", e);
+            }
         }
 
         // 获取菜单组实例
         DefaultActionGroup actionGroup = (DefaultActionGroup) ActionManager.getInstance().getAction("com.example.ReflectorMate.GenerateReflectionMethods");
 
-        // 遍历并创建菜单项
-        for (MenuConfigLoader.MenuItem item : menuItems) {
+        // 清空并重新添加菜单项
+        actionGroup.removeAll();
+        for (MenuConfigLoader.MenuItem item : cachedMenuItems) {
             actionGroup.add(createActionGroup(item));
         }
     }
@@ -54,3 +58,4 @@ public class PluginInitializer {
         }
     }
 }
+
