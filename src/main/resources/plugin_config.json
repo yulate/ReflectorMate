@@ -63,6 +63,16 @@
       ]
     },
     {
+      "name": "Set Final Static",
+      "code": "public static void setFinalStatic(Field field) throws NoSuchFieldException, IllegalAccessException {\n    field.setAccessible(true);\n    Field modifiersField = Field.class.getDeclaredField(\"modifiers\");\n    modifiersField.setAccessible(true);\n    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);\n}",
+      "imports": [
+        "java.lang.reflect.Field",
+        "java.lang.reflect.Modifier"
+      ],
+      "mavenDependencies": [
+      ]
+    },
+    {
       "name": "Get First Constructor Method",
       "code": "    public static Constructor<?> getFirstCtor(String name) throws Exception {\n        Constructor<?> ctor = Class.forName(name).getDeclaredConstructors()[0];\n        ctor.setAccessible(true);\n        return ctor;\n    }",
       "imports": [
